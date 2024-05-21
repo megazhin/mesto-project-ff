@@ -5,6 +5,7 @@ function handleCard(element) {
   const newCardTemplate = getClonableCard();
   
   fillCard(newCardTemplate, element);
+  
   handleDeleteButton(newCardTemplate,function (event) {
     const cardToDelete = event.target.closest('.card');
     cardToDelete.remove();
