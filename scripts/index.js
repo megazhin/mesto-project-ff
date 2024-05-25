@@ -1,4 +1,6 @@
-initialCards.forEach((elementValue) => createWidget(elementValue, deleteCard));
+const placesList = document.querySelector('.places__list');
+
+initialCards.forEach((elementValue) => attachCard(elementValue, deleteCard));
 
 function createWidget(element, deleteCard) {
   
@@ -9,7 +11,7 @@ function createWidget(element, deleteCard) {
   const deleteButton = newCardTemplate.querySelector('.card__delete-button');
   deleteButton.addEventListener('click', deleteCard);
 
-  attachCard(newCardTemplate);
+  return newCardTemplate;
 }
 
 function getClonableCard() {
@@ -29,18 +31,6 @@ function deleteCard(event) {
   cardToDelete.remove();
 }
 
-function attachCard(newCardTemplate) {
-  const placesList = document.querySelector('.places__list');
-  placesList.append(newCardTemplate);
+function attachCard(elementValue, deleteCard) {
+  placesList.append(createWidget(elementValue, deleteCard));
 }
-
-
-// @todo: Темплейт карточки
-
-// @todo: DOM узлы
-
-// @todo: Функция создания карточки
-
-// @todo: Функция удаления карточки
-
-// @todo: Вывести карточки на страницу
