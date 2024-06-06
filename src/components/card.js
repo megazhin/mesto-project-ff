@@ -9,6 +9,9 @@ function createWidget(element, deleteCard) {
     const deleteButton = newCardTemplate.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', deleteCard);
   
+    const cardLikeButton = newCardTemplate.querySelector('.card__like-button');
+    cardLikeButton.addEventListener('click', like);
+
     return newCardTemplate;
   }
   
@@ -24,13 +27,18 @@ function createWidget(element, deleteCard) {
     newCardTemplate.querySelector('.card__title').textContent = element.name;
   }
   
-  function deleteCard(event) {
-    const cardToDelete = event.target.closest('.card');
+  function deleteCard(evt) {
+    const cardToDelete = evt.target.closest('.card');
     cardToDelete.remove();
   }
   
   function attachCard(elementValue, deleteCard) {
     placesList.append(createWidget(elementValue, deleteCard));
+  }
+
+  function like(evt) {
+    const liked = evt.target.closest('.card__like-button');
+    liked.classList.toggle('card__like-button_is-active');
   }
 
   export {attachCard, deleteCard}
