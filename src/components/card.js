@@ -1,6 +1,7 @@
 import { placesList } from "..";
+import { openImage } from "./modal";
 
-function createWidget(element, deleteCard) {
+function createWidget(element, deleteCard, like) {
   
     const newCardTemplate = getClonableCard();
     
@@ -11,6 +12,16 @@ function createWidget(element, deleteCard) {
   
     const cardLikeButton = newCardTemplate.querySelector('.card__like-button');
     cardLikeButton.addEventListener('click', like);
+
+    newCardTemplate.querySelector('.card__image').addEventListener('click', function(evt) {
+      const target = evt.target;
+      const image = document.querySelector('.popup__image');
+      const imageName =  document.querySelector('.popup__caption');
+      imageName.textContent = element.name;
+      image.src = target.src;
+      image.alt = target.alt;
+      openImage();
+    })
 
     return newCardTemplate;
   }
@@ -33,7 +44,7 @@ function createWidget(element, deleteCard) {
   }
   
   function attachCard(elementValue, deleteCard) {
-    placesList.append(createWidget(elementValue, deleteCard));
+    placesList.append(createWidget(elementValue, deleteCard, like));
   }
 
   function like(evt) {
@@ -41,4 +52,5 @@ function createWidget(element, deleteCard) {
     liked.classList.toggle('card__like-button_is-active');
   }
 
+  
   export {attachCard, deleteCard}
