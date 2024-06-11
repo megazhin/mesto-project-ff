@@ -22,7 +22,6 @@ function createWidget(element, deleteCard, like) {
       image.alt = target.alt;
       openImage();
     })
-
     return newCardTemplate;
   }
   
@@ -53,4 +52,4 @@ function createWidget(element, deleteCard, like) {
   }
 
   
-  export {attachCard, deleteCard}
+  export {attachCard, deleteCard, getClonableCard, createWidget, like}
