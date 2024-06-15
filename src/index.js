@@ -1,22 +1,38 @@
 import { initialCards } from './components/cards';
 import './pages/index.css';
 import { attachCard, deleteCard} from './components/card';
-import { openModal, buttonEditProfile, buttonAddCard, formAddCard, formEditProfile, closeModalHandle, popupEditProfile, popupNewCard, popupImage, profileName, profileDescription, inputNameProfile, inputJobProfile} from './components/modal';
+import { openModal , modalHandle } from './components/modal';
 
+const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonAddCard = document.querySelector('.profile__add-button');
+const popupEditProfile = document.querySelector('.popup_type_edit');
+const popupNewCard = document.querySelector('.popup_type_new-card');
+const popupImage = document.querySelector('.popup_type_image');
+const formEditProfile = document.forms.editProfile;
+const inputNameProfile = formEditProfile.elements.name;
+const inputJobProfile = formEditProfile.elements.description;
+const profileName = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+const formAddCard = document.forms.newPlace;
+const escButton = 'Escape'
 const placesList = document.querySelector('.places__list');
 
 initialCards.forEach((elementValue) => attachCard(elementValue, deleteCard, like, openPopupImage, false));
 
+function inputValues() {
+  inputNameProfile.value = profileName.textContent;
+  inputJobProfile.value = profileDescription.textContent;
+}
+
 buttonEditProfile.addEventListener('click', function(evt){
   openModal(popupEditProfile);
-  closeModalHandle(popupEditProfile);
+  modalHandle(popupEditProfile,false);
+  inputValues();
 });
 buttonAddCard.addEventListener('click', function(evt){
   openModal(popupNewCard);
-  closeModalHandle(popupNewCard);
+  modalHandle(popupNewCard,false);
 });
-
-
 
 formEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
 formAddCard.addEventListener('submit', handleFormAddCardSubmit);
@@ -29,7 +45,7 @@ function like(evt) {
 function openPopupImage(evt) {
   fillNewImage(evt);
   openModal(popupImage);
-  closeModalHandle(popupImage);
+  modalHandle(popupImage,false);
 }
 
 function fillNewImage(evt) {
@@ -45,17 +61,14 @@ function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = inputNameProfile.value;
   profileDescription.textContent = inputJobProfile.value;
-  closeModalHandle(popupEditProfile);
-  // if(inputJobProfile.value != "") {
-    
-  // }
-  
+  modalHandle(popupEditProfile,true);
 }
+
 function handleFormAddCardSubmit(evt) {
   evt.preventDefault();
   attachCard(null, deleteCard, like, openPopupImage,true);
   evt.target.reset();
-  closeModalHandle(popupNewCard);
+  modalHandle(popupNewCard,true);
 }
 
-export {placesList, like};
+export {placesList, like, escButton, formAddCard};

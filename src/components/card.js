@@ -1,5 +1,5 @@
 import { placesList } from "..";
-import { formAddCard } from "./modal";
+import { formAddCard } from "..";
 
 function createWidget(element, deleteCard, like, openPopupImage, isNewCard) {
   
@@ -53,4 +53,4 @@ function createWidget(element, deleteCard, like, openPopupImage, isNewCard) {
   
 
   
-  export {attachCard, deleteCard, getClonableCard, createWidget}
+  export {attachCard, deleteCard, createWidget}
