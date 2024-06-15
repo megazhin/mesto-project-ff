@@ -1,11 +1,10 @@
 import { placesList } from "..";
-import { openImage } from "./modal";
+import { formAddCard } from "./modal";
 
-function createWidget(element, deleteCard, like) {
+function createWidget(element, deleteCard, like, openPopupImage, isNewCard) {
   
     const newCardTemplate = getClonableCard();
-    
-    fillCard(newCardTemplate, element);
+    isNewCard ? fillNewCard(newCardTemplate, element) : fillCard(newCardTemplate, element);
     
     const deleteButton = newCardTemplate.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', deleteCard);
@@ -13,18 +12,11 @@ function createWidget(element, deleteCard, like) {
     const cardLikeButton = newCardTemplate.querySelector('.card__like-button');
     cardLikeButton.addEventListener('click', like);
 
-    newCardTemplate.querySelector('.card__image').addEventListener('click', function(evt) {
-      const target = evt.target;
-      const image = document.querySelector('.popup__image');
-      const imageName =  document.querySelector('.popup__caption');
-      imageName.textContent = element.name;
-      image.src = target.src;
-      image.alt = target.alt;
-      openImage();
-    })
+    newCardTemplate.querySelector('.card__image').addEventListener('click', openPopupImage)
+
     return newCardTemplate;
   }
-  
+
   function getClonableCard() {
     const cardTemplate = document.querySelector('#card-template');
     const cardTemplateContent = cardTemplate.content;
@@ -37,19 +29,28 @@ function createWidget(element, deleteCard, like) {
     newCardTemplate.querySelector('.card__title').textContent = element.name;
   }
   
+  function fillNewCard(cardTemplate) {
+    const inputName = formAddCard.elements.placeName;
+    const inputLink = formAddCard.elements.link;
+    cardTemplate.querySelector('.card__image').src = inputLink.value;
+    cardTemplate.querySelector('.card__title').textContent = inputName.value;
+  }
+
   function deleteCard(evt) {
     const cardToDelete = evt.target.closest('.card');
     cardToDelete.remove();
   }
   
-  function attachCard(elementValue, deleteCard) {
-    placesList.append(createWidget(elementValue, deleteCard, like));
-  }
-
-  function like(evt) {
-    const liked = evt.target.closest('.card__like-button');
-    liked.classList.toggle('card__like-button_is-active');
+  function attachCard(elementValue, deleteCard, like, openPopupImage, isNewCard) {
+    if (isNewCard) {
+      placesList.prepend(createWidget(elementValue, deleteCard, like, openPopupImage, isNewCard));
+    }  else { 
+      placesList.append(createWidget(elementValue, deleteCard, like, openPopupImage, isNewCard));
+    }
+  
   }
 
   
-  export {attachCard, deleteCard, getClonableCard, createWidget, like}
+
+  
+  export {attachCard, deleteCard, getClonableCard, createWidget}
