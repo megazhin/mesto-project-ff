@@ -1,10 +1,10 @@
 import { placesList } from "..";
 import { formAddCard } from "..";
 
-function createWidget(element, deleteCard, like, openPopupImage, isNewCard) {
+function createWidget(element, deleteCard, like, openPopupImage) {
   
     const newCardTemplate = getClonableCard();
-    isNewCard ? fillNewCard(newCardTemplate, element) : fillCard(newCardTemplate, element);
+    fillCard(newCardTemplate, element);
     
     const deleteButton = newCardTemplate.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', deleteCard);
@@ -25,27 +25,21 @@ function createWidget(element, deleteCard, like, openPopupImage, isNewCard) {
   
   function fillCard(newCardTemplate, element) {
     newCardTemplate.querySelector('.card__image').src = element.link;
-    newCardTemplate.querySelector('.card__image').alt = element.alt;
     newCardTemplate.querySelector('.card__title').textContent = element.name;
+    newCardTemplate.querySelector('.card__image').alt = element.alt;
   }
   
-  function fillNewCard(cardTemplate) {
-    const inputName = formAddCard.elements.placeName;
-    const inputLink = formAddCard.elements.link;
-    cardTemplate.querySelector('.card__image').src = inputLink.value;
-    cardTemplate.querySelector('.card__title').textContent = inputName.value;
-  }
-
   function deleteCard(evt) {
     const cardToDelete = evt.target.closest('.card');
     cardToDelete.remove();
   }
   
   function attachCard(elementValue, deleteCard, like, openPopupImage, isNewCard) {
-    if (isNewCard) {
-      placesList.prepend(createWidget(elementValue, deleteCard, like, openPopupImage, isNewCard));
-    }  else { 
-      placesList.append(createWidget(elementValue, deleteCard, like, openPopupImage, isNewCard));
+    const newCard = createWidget(elementValue, deleteCard, like, openPopupImage);
+    if (isNewCard) { 
+      placesList.prepend(newCard); 
+    }  else {  
+      placesList.append(newCard); 
     }
   
   }

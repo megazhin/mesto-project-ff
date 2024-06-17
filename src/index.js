@@ -1,7 +1,7 @@
 import { initialCards } from './components/cards';
 import './pages/index.css';
 import { attachCard, deleteCard} from './components/card';
-import { openModal , modalHandle } from './components/modal';
+import { openModal , closeModal} from './components/modal';
 
 const buttonEditProfile = document.querySelector('.profile__edit-button');
 const buttonAddCard = document.querySelector('.profile__add-button');
@@ -14,8 +14,11 @@ const inputJobProfile = formEditProfile.elements.description;
 const profileName = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const formAddCard = document.forms.newPlace;
-const escButton = 'Escape'
+const inputNameCard = formAddCard.elements.placeName; 
+const inputLinkCard = formAddCard.elements.link;
 const placesList = document.querySelector('.places__list');
+
+
 
 initialCards.forEach((elementValue) => attachCard(elementValue, deleteCard, like, openPopupImage, false));
 
@@ -26,12 +29,10 @@ function inputValues() {
 
 buttonEditProfile.addEventListener('click', function(evt){
   openModal(popupEditProfile);
-  modalHandle(popupEditProfile,false);
   inputValues();
 });
 buttonAddCard.addEventListener('click', function(evt){
   openModal(popupNewCard);
-  modalHandle(popupNewCard,false);
 });
 
 formEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
@@ -45,7 +46,6 @@ function like(evt) {
 function openPopupImage(evt) {
   fillNewImage(evt);
   openModal(popupImage);
-  modalHandle(popupImage,false);
 }
 
 function fillNewImage(evt) {
@@ -61,14 +61,18 @@ function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = inputNameProfile.value;
   profileDescription.textContent = inputJobProfile.value;
-  modalHandle(popupEditProfile,true);
+  closeModal(popupEditProfile);
 }
 
 function handleFormAddCardSubmit(evt) {
+  const cardData = {
+    link: inputLinkCard.value,
+    name: inputNameCard.value
+  }
   evt.preventDefault();
-  attachCard(null, deleteCard, like, openPopupImage,true);
+  attachCard(cardData, deleteCard, like, openPopupImage,true);
   evt.target.reset();
-  modalHandle(popupNewCard,true);
+  closeModal(popupNewCard);
 }
 
-export {placesList, like, escButton, formAddCard};
+export {placesList, like, formAddCard};
