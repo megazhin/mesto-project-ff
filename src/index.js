@@ -2,6 +2,7 @@ import { initialCards } from './components/cards';
 import './pages/index.css';
 import { attachCard, deleteCard} from './components/card';
 import { openModal , closeModal} from './components/modal';
+import { enableValidation } from './components/validation';
 
 const buttonEditProfile = document.querySelector('.profile__edit-button');
 const buttonAddCard = document.querySelector('.profile__add-button');
@@ -17,8 +18,6 @@ const formAddCard = document.forms.newPlace;
 const inputNameCard = formAddCard.elements.placeName; 
 const inputLinkCard = formAddCard.elements.link;
 const placesList = document.querySelector('.places__list');
-
-
 
 initialCards.forEach((elementValue) => attachCard(elementValue, deleteCard, like, openPopupImage, false));
 
@@ -74,5 +73,7 @@ function handleFormAddCardSubmit(evt) {
   evt.target.reset();
   closeModal(popupNewCard);
 }
+
+enableValidation();
 
 export {placesList, like, formAddCard};
