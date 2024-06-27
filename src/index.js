@@ -18,6 +18,13 @@ const formAddCard = document.forms.newPlace;
 const inputNameCard = formAddCard.elements.placeName; 
 const inputLinkCard = formAddCard.elements.link;
 const placesList = document.querySelector('.places__list');
+const validatonModalConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inputErrorClass: 'popup__input_type_error',
+  inputErrorTextColor: 'popup__input-error'
+}
 
 initialCards.forEach((elementValue) => attachCard(elementValue, deleteCard, like, openPopupImage, false));
 
@@ -74,6 +81,6 @@ function handleFormAddCardSubmit(evt) {
   closeModal(popupNewCard);
 }
 
-enableValidation();
+enableValidation(validatonModalConfig);
 
-export {placesList, like, formAddCard};
+export {placesList, like, formAddCard,validatonModalConfig};

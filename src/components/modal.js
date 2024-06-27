@@ -1,3 +1,7 @@
+import { clearValidation } from "./validation";
+import { validatonModalConfig } from "..";
+
+
 const escButton = 'Escape' 
 let activeModal;
 
@@ -21,10 +25,21 @@ function openModal(modalForOpen) {
 }
 
 function closeModal() { 
-    activeModal.classList.remove('popup_is-opened'); 
-    document.removeEventListener('keydown', closeByEsc); 
-    document.removeEventListener('click', closeByClickOverlay);
-    activeModal = null;
-  } 
+  activeModal.classList.remove('popup_is-opened'); 
+  document.removeEventListener('keydown', closeByEsc); 
+  document.removeEventListener('click', closeByClickOverlay);
+  clearValidation(activeModal,validatonModalConfig);
+  clearInputValuesIfExist();
+  activeModal = null;
+} 
+
+function clearInputValuesIfExist() {
+  let inputs = Array.from(activeModal.querySelectorAll(validatonModalConfig.inputSelector));
+  inputs.forEach(inputElement => {
+    inputElement.value = "";
+  });
+}
 
 export {openModal, closeModal}
+
+
