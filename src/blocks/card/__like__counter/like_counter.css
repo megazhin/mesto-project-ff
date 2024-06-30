@@ -1,0 +1,9 @@
+.like__counter {
+  display: flex;
+  margin: 0;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 15.73px;
+  align-items: center;
+  justify-content: center;
+}

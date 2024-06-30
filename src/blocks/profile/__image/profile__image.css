@@ -9,6 +9,20 @@
   margin: 0 29px 0 0;
 }
 
+.middle {
+  position: absolute;
+  left: 47px;
+  opacity: 0;
+}
+
+.profile:hover .profile__image{
+  opacity: 0.2;
+}
+
+.profile:hover .middle {
+  opacity: 1;
+}
+
 @media screen and (max-width: 740px) {
   .profile__image {
     margin: 0 10px 0 0;

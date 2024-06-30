@@ -1,14 +1,15 @@
-import { initialCards } from './components/cards';
 import './pages/index.css';
-import { attachCard, deleteCard} from './components/card';
-import { openModal , closeModal} from './components/modal';
+import { closeModal, openModal} from './components/modal';
 import { enableValidation } from './components/validation';
+import { initProfile, initCards, editProfile, addCard, editAvatar} from './components/api';
 
 const buttonEditProfile = document.querySelector('.profile__edit-button');
 const buttonAddCard = document.querySelector('.profile__add-button');
+const buttonEditAvatar = document.querySelector('.profile__image');
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupImage = document.querySelector('.popup_type_image');
+const popupEditAvatar = document.querySelector('.popup_update_avatar');
 const formEditProfile = document.forms.editProfile;
 const inputNameProfile = formEditProfile.elements.name;
 const inputJobProfile = formEditProfile.elements.description;
@@ -17,6 +18,8 @@ const profileDescription = document.querySelector('.profile__description');
 const formAddCard = document.forms.newPlace;
 const inputNameCard = formAddCard.elements.placeName; 
 const inputLinkCard = formAddCard.elements.link;
+const formEditAvatar = document.forms.editAvatar;
+const inputLinkAvatar = formEditAvatar.elements.avatarLink;
 const placesList = document.querySelector('.places__list');
 const validatonModalConfig = {
   formSelector: '.popup__form',
@@ -26,7 +29,6 @@ const validatonModalConfig = {
   inputErrorTextColor: 'popup__input-error'
 }
 
-initialCards.forEach((elementValue) => attachCard(elementValue, deleteCard, like, openPopupImage, false));
 
 function inputValues() {
   inputNameProfile.value = profileName.textContent;
@@ -40,9 +42,13 @@ buttonEditProfile.addEventListener('click', function(evt){
 buttonAddCard.addEventListener('click', function(evt){
   openModal(popupNewCard);
 });
+buttonEditAvatar.addEventListener('click', function(evt){
+  openModal(popupEditAvatar);
+})
 
 formEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
 formAddCard.addEventListener('submit', handleFormAddCardSubmit);
+formEditAvatar.addEventListener('submit', handleFormEditAvatarSubmit);
 
 function like(evt) {
   const liked = evt.target.closest('.card__like-button');
@@ -65,22 +71,24 @@ function fillNewImage(evt) {
 
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = inputNameProfile.value;
-  profileDescription.textContent = inputJobProfile.value;
-  closeModal(popupEditProfile);
+  editProfile();
 }
 
 function handleFormAddCardSubmit(evt) {
-  const cardData = {
-    link: inputLinkCard.value,
-    name: inputNameCard.value
-  }
   evt.preventDefault();
-  attachCard(cardData, deleteCard, like, openPopupImage,true);
+  addCard();
   evt.target.reset();
-  closeModal(popupNewCard);
+}
+
+function handleFormEditAvatarSubmit(evt) {
+  evt.preventDefault();
+  editAvatar();
 }
 
 enableValidation(validatonModalConfig);
 
-export {placesList, like, formAddCard,validatonModalConfig};
+initProfile();
+
+initCards();
+
+export {placesList, like, formAddCard,validatonModalConfig, profileName, profileDescription, inputNameProfile,inputJobProfile,inputLinkCard,inputNameCard,popupNewCard,popupEditProfile, inputLinkAvatar, popupEditAvatar,  openPopupImage};

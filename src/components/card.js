@@ -1,5 +1,5 @@
 import { placesList } from "..";
-import { formAddCard } from "..";
+import { setLikeCounter } from "./api";
 
 function createWidget(element, deleteCard, like, openPopupImage) {
   
@@ -12,8 +12,8 @@ function createWidget(element, deleteCard, like, openPopupImage) {
     const cardLikeButton = newCardTemplate.querySelector('.card__like-button');
     cardLikeButton.addEventListener('click', like);
 
-    newCardTemplate.querySelector('.card__image').addEventListener('click', openPopupImage)
-
+    newCardTemplate.querySelector('.card__image').addEventListener('click', openPopupImage);
+    
     return newCardTemplate;
   }
 
@@ -27,6 +27,7 @@ function createWidget(element, deleteCard, like, openPopupImage) {
     newCardTemplate.querySelector('.card__image').src = element.link;
     newCardTemplate.querySelector('.card__title').textContent = element.name;
     newCardTemplate.querySelector('.card__image').alt = element.alt;
+    newCardTemplate.querySelector('.like__counter').textContent = element.likes.length;
   }
   
   function deleteCard(evt) {
@@ -41,10 +42,6 @@ function createWidget(element, deleteCard, like, openPopupImage) {
     }  else {  
       placesList.append(newCard); 
     }
-  
   }
 
-  
-
-  
   export {attachCard, deleteCard, createWidget}
