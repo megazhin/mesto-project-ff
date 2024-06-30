@@ -5,7 +5,8 @@ import { initProfile, initCards, editProfile, addCard, editAvatar} from './compo
 
 const buttonEditProfile = document.querySelector('.profile__edit-button');
 const buttonAddCard = document.querySelector('.profile__add-button');
-const buttonEditAvatar = document.querySelector('.profile__image');
+const profileImage = document.querySelector('.profile__image');
+const buttonEditAvatar = document.querySelector('.edit__avatar')
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupImage = document.querySelector('.popup_type_image');
@@ -42,6 +43,9 @@ buttonEditProfile.addEventListener('click', function(evt){
 buttonAddCard.addEventListener('click', function(evt){
   openModal(popupNewCard);
 });
+profileImage.addEventListener('click', function(evt){
+  openModal(popupEditAvatar);
+})
 buttonEditAvatar.addEventListener('click', function(evt){
   openModal(popupEditAvatar);
 })
