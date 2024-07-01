@@ -54,10 +54,10 @@ formEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
 formAddCard.addEventListener('submit', handleFormAddCardSubmit);
 formEditAvatar.addEventListener('submit', handleFormEditAvatarSubmit);
 
-function like(evt) {
-  const liked = evt.target.closest('.card__like-button');
-  liked.classList.toggle('card__like-button_is-active');
-}
+// function like(evt) {
+//   const liked = evt.target.closest('.card__like-button');
+//   liked.classList.toggle('card__like-button_is-active');
+// }
 
 function openPopupImage(evt) {
   fillNewImage(evt);
@@ -93,6 +93,5 @@ enableValidation(validatonModalConfig);
 
 initProfile();
 
-initCards();
 
-export {placesList, like, formAddCard,validatonModalConfig, profileName, profileDescription, inputNameProfile,inputJobProfile,inputLinkCard,inputNameCard,popupNewCard,popupEditProfile, inputLinkAvatar, popupEditAvatar,  openPopupImage};
+export {placesList, formAddCard,validatonModalConfig, profileName, profileDescription, inputNameProfile,inputJobProfile,inputLinkCard,inputNameCard,popupNewCard,popupEditProfile, inputLinkAvatar, popupEditAvatar,  openPopupImage};

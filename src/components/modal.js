@@ -22,7 +22,7 @@ function openModal(modalForOpen) {
   modalForOpen.classList.add('popup_is-opened', 'popup_is-animated');
   document.addEventListener('click', closeByClickOverlay);
   document.addEventListener('keydown', closeByEsc);
-  setButtonText(modalForOpen);
+  setButtonText(modalForOpen,true);
 }
 
 function closeModal() { 
@@ -31,8 +31,7 @@ function closeModal() {
   document.removeEventListener('click', closeByClickOverlay);
   clearValidation(activeModal,validatonModalConfig);
   clearInputValuesIfExist();
-  const buttonSave = activeModal.querySelector('.popup__button');
-  buttonSave.textContent = 'Сохранить';
+  setButtonText(activeModal,false)
   activeModal = null;
 } 
 
@@ -43,11 +42,17 @@ function clearInputValuesIfExist() {
   });
 }
 
-function setButtonText(activeModal) {
+function setButtonText(activeModal,isOpen) {
     const buttonSave = activeModal.querySelector('.popup__button');
-    buttonSave.addEventListener('click', function () {
-      buttonSave.textContent = 'Сохранение...';
-    });
+    if (buttonSave != null) {
+      if (isOpen) {
+        buttonSave.textContent = 'Сохранить';
+      } else {
+        buttonSave.addEventListener('click', function () {
+          buttonSave.textContent = 'Сохранение...';
+        });
+      }
+    }
 }
 
 export {openModal, closeModal, setButtonText}
