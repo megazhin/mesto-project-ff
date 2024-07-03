@@ -1,10 +1,11 @@
 import { profileName, profileDescription, inputNameProfile, inputJobProfile, inputLinkCard, inputNameCard, popupNewCard, popupEditProfile, openPopupImage, inputLinkAvatar, popupEditAvatar } from "..";
-import { attachCard } from "./card";
 import { closeModal } from "./modal";
+import { checkResponse } from "./utils";
 
-let profile;
 const baseUrl = 'https://nomoreparties.co/v1/wff-cohort-17';
 const authToken = 'e184ef3f-b81c-46e4-b802-f92c44d2ab87';
+let cardLikeButton;
+let cardId;
 
 function initProfile(){
     return fetch(`${baseUrl}/users/me`, {
@@ -12,23 +13,7 @@ function initProfile(){
         authorization: authToken
       }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        profileName.textContent = result.name;
-        profileDescription.textContent = result.about;
-        const avatar = document.querySelector('.profile__image');
-        avatar.src = result.avatar;
-        profile = result;
-        initCards();
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      .then(checkResponse)
 }
 
   function initCards(){
@@ -37,18 +22,7 @@ function initProfile(){
         authorization: authToken
       }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        result.forEach((elementValue) => attachCard(elementValue, deleteCard, like, openPopupImage, false));
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      .then(checkResponse)
   }
 
   function editProfile() {
@@ -63,20 +37,7 @@ function initProfile(){
         about: inputJobProfile.value
       })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-      .then((result) => {
-        profileName.textContent = inputNameProfile.value;
-        profileDescription.textContent = inputJobProfile.value;
-        closeModal(popupEditProfile);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+    .then(checkResponse)
   }
 
   function addCard() {
@@ -91,28 +52,7 @@ function initProfile(){
         name: inputNameCard.value
       })
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .then((result) => {
-        const cardData = {
-          link: result.link,
-          name: result.name,
-          _id: result._id,
-          likes: [],
-          owner: {
-            _id : profile._id
-          }
-        }
-        attachCard(cardData, deleteCard, like, openPopupImage,true);
-        closeModal(popupNewCard);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+      .then(checkResponse)
   }
 
   function editAvatar() {
@@ -126,23 +66,10 @@ function initProfile(){
         avatar: inputLinkAvatar.value
       })
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => {
-      const avatar = document.querySelector('.profile__image');
-      avatar.src = inputLinkAvatar.value;
-      closeModal(popupEditAvatar);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    .then(checkResponse)
   }
 
-  function deleteCard(evt) {
+  function handleDeleteCard(evt) {
     const cardId = evt.target.parentElement.querySelector('.cardId').textContent;
     return fetch(`${baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
@@ -150,69 +77,32 @@ function initProfile(){
         authorization: authToken
       },
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => {
-      const cardToDelete = evt.target.closest('.card');
-      cardToDelete.remove();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    .then(checkResponse)
   }
 
   function like(evt) {
-    const cardLikeButton = evt.target;
-    const cardId = cardLikeButton.closest('.places__item').querySelector('.cardId').textContent;
+    cardLikeButton = evt.target;
+    cardId = cardLikeButton.closest('.places__item').querySelector('.cardId').textContent;
     return fetch(`${baseUrl}/cards/likes/${cardId}`, {
       method: 'PUT',
       headers: {
         authorization: authToken
       },
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => {
-      cardLikeButton.parentElement.querySelector('.like__counter').textContent = result.likes.length;
-
-      cardLikeButton.classList.add('card__like-button_is-active');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    .then(checkResponse)
   }
 
   function unlike(evt) {
-    const cardLikeButton = evt.target;
-    const cardId = cardLikeButton.closest('.places__item').querySelector('.cardId').textContent;
+    cardLikeButton = evt.target;
+    cardId = cardLikeButton.closest('.places__item').querySelector('.cardId').textContent;
     return fetch(`${baseUrl}/cards/likes/${cardId}`, {
       method: 'DELETE',
       headers: {
         authorization: authToken
       },
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((result) => {
-      cardLikeButton.parentElement.querySelector('.like__counter').textContent = result.likes.length;
-      cardLikeButton.classList.remove('card__like-button_is-active');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    .then(checkResponse)
   }
 
 
-export {initProfile , initCards, editProfile, addCard, editAvatar, profile, deleteCard, like, unlike}
+export {initProfile , initCards, editProfile, addCard, editAvatar, handleDeleteCard, like, unlike, cardLikeButton}

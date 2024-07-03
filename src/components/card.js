@@ -1,5 +1,5 @@
-import { placesList } from "..";
-import { profile, deleteCard, like, unlike } from "./api";
+import { handleDeleteCard, like, unlike, cardLikeButton} from "./api";
+import { profile } from "..";
 
 function createWidget(element,  openPopupImage) {
   
@@ -28,6 +28,17 @@ function createWidget(element,  openPopupImage) {
     return cardTemplateContent.querySelector('.places__item').cloneNode(true);
   }
   
+  function deleteCard(evt) {
+    handleDeleteCard(evt)
+    .then((result) => {
+      const cardToDelete = evt.target.closest('.card');
+      cardToDelete.remove();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
   function fillCard(newCardTemplate, element) {
     newCardTemplate.querySelector('.card__image').src = element.link;
     newCardTemplate.querySelector('.card__title').textContent = element.name;
@@ -43,19 +54,26 @@ function createWidget(element,  openPopupImage) {
   
   function handleLike(evt) {
     if(evt.target.classList.contains('card__like-button_is-active')){
-      unlike(evt);
+      unlike(evt)
+      .then((result) => {
+        cardLikeButton.parentElement.querySelector('.like__counter').textContent = result.likes.length;
+        cardLikeButton.classList.remove('card__like-button_is-active');
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     } else {
-      like(evt);
+      like(evt)
+      .then((result) => {
+        cardLikeButton.parentElement.querySelector('.like__counter').textContent = result.likes.length;
+  
+        cardLikeButton.classList.add('card__like-button_is-active');
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     }
   }
 
-  function attachCard(elementValue, deleteCard, like, openPopupImage, isNewCard) {
-    const newCard = createWidget(elementValue, openPopupImage);
-    if (isNewCard) { 
-      placesList.prepend(newCard); 
-    }  else {  
-      placesList.append(newCard); 
-    }
-  }
 
-  export {attachCard, createWidget}
+  export { createWidget, handleDeleteCard }

@@ -63,9 +63,9 @@ function toggleButtonState(inputList,buttonElement) {
 }
 
 function clearValidation(formElement,validatonModalConfig) {
-  let inputs = Array.from(formElement.querySelectorAll(validatonModalConfig.inputSelector))
+  const inputs = Array.from(formElement.querySelectorAll(validatonModalConfig.inputSelector))
   inputs.forEach(inputElement => hideInputError(formElement,inputElement,validatonModalConfig));
-  let buttonElement = formElement.querySelector(validatonModalConfig.submitButtonSelector)
+  const buttonElement = formElement.querySelector(validatonModalConfig.submitButtonSelector)
   if (buttonElement != null ) {
     buttonElement.disabled = true;
   }
