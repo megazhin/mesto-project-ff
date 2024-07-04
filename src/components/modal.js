@@ -1,5 +1,5 @@
 import { clearValidation } from "./validation";
-import { validatonModalConfig, clearInputValuesIfExist, setButtonText } from "..";
+import { validatonModalConfig, clearInputValuesIfExist } from "..";
 
 
 const escButton = 'Escape' 

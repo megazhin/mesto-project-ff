@@ -1,5 +1,3 @@
-import { profileName, profileDescription, inputNameProfile, inputJobProfile, inputLinkCard, inputNameCard, popupNewCard, popupEditProfile, openPopupImage, inputLinkAvatar, popupEditAvatar } from "..";
-import { closeModal } from "./modal";
 import { checkResponse } from "./utils";
 
 const baseUrl = 'https://nomoreparties.co/v1/wff-cohort-17';
@@ -25,7 +23,7 @@ function initProfile(){
       .then(checkResponse)
   }
 
-  function editProfile() {
+  function editProfile(name, job) {
     return fetch(`${baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -33,14 +31,14 @@ function initProfile(){
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: inputNameProfile.value,
-        about: inputJobProfile.value
+        name: name,
+        about: job
       })
     })
     .then(checkResponse)
   }
 
-  function addCard() {
+  function addCard(link, name) {
     return fetch(`${baseUrl}/cards`, {
       method: 'POST',
       headers: {
@@ -48,14 +46,14 @@ function initProfile(){
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        link: inputLinkCard.value,
-        name: inputNameCard.value
+        link: link,
+        name: name
       })
     })
       .then(checkResponse)
   }
 
-  function editAvatar() {
+  function editAvatar(avatar) {
     return fetch(`${baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
@@ -63,7 +61,7 @@ function initProfile(){
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        avatar: inputLinkAvatar.value
+        avatar: avatar
       })
     })
     .then(checkResponse)

@@ -78,7 +78,7 @@ function fillNewImage(evt) {
 }
 
 function attachCard(elementValue, handleDeleteCard, like, openPopupImage, isNewCard) {
-  const newCard = createWidget(elementValue, openPopupImage);
+  const newCard = createWidget(elementValue, openPopupImage, profile);
   if (isNewCard) { 
     placesList.prepend(newCard); 
   }  else {  
@@ -89,25 +89,27 @@ function attachCard(elementValue, handleDeleteCard, like, openPopupImage, isNewC
 
 function handleFormEditProfileSubmit(evt) {
   evt.preventDefault();
-  setButtonText(activeModal,false);
-  editProfile()
+  const buttonSave = activeModal.querySelector('.popup__button');
+  renderLoading(true, buttonSave);
+  editProfile(inputNameProfile.value, inputJobProfile.value)
   .then((result) => {
     profileName.textContent = inputNameProfile.value;
     profileDescription.textContent = inputJobProfile.value;
+    closeModal(popupEditProfile);
   })
   .catch((err) => {
     console.log(err);
   })
   .finally(() => {
-    setButtonText(activeModal,true);
-    closeModal(popupEditProfile);
+    renderLoading(false, buttonSave);
   })
 }
 
 function handleFormAddCardSubmit(evt) {
   evt.preventDefault();
-  setButtonText(activeModal,false);
-  addCard()
+  const buttonSave = activeModal.querySelector('.popup__button');
+  renderLoading(true, buttonSave);
+  addCard(inputLinkCard.value, inputNameCard.value)
   .then((result) => {
     const cardData = {
       link: result.link,
@@ -119,13 +121,13 @@ function handleFormAddCardSubmit(evt) {
       }
     }
     attachCard(cardData, handleDeleteCard, like, openPopupImage,true);
+    closeModal(popupNewCard);
   })
   .catch((err) => {
     console.log(err);
   })
   .finally(() => {
-    setButtonText(activeModal,true);
-    closeModal(popupNewCard);
+    renderLoading(false, buttonSave);
   })
   evt.target.reset();
 }
@@ -139,33 +141,29 @@ function clearInputValuesIfExist() {
 
 function handleFormEditAvatarSubmit(evt) {
   evt.preventDefault();
-  setButtonText(activeModal,false);
-  editAvatar()
+  const buttonSave = activeModal.querySelector('.popup__button');
+  renderLoading(true, buttonSave);
+  editAvatar(inputLinkAvatar.value)
   .then((result) => {
     const avatar = document.querySelector('.profile__image');
     avatar.src = inputLinkAvatar.value;
+    closeModal(popupEditAvatar);
   })
   .catch((err) => {
     console.log(err);
   })
   .finally(() => {
-    setButtonText(activeModal,true);
-    closeModal(popupEditAvatar);
+    renderLoading(false,buttonSave);
   })
 }
 
 enableValidation(validatonModalConfig);
 
-function setButtonText(activeModal,isOpen) {
-  const buttonSave = activeModal.querySelector('.popup__button');
-  if (buttonSave != null) {
-    if (isOpen) {
-      buttonSave.textContent = 'Сохранить';
-    } else {
-      buttonSave.addEventListener('click', function () {
-        buttonSave.textContent = 'Сохранение...';
-      });
-    }
+function renderLoading(isLoading, button, buttonText='Сохранить', loadingText='Сохранение...'){
+  if(isLoading) {
+    button.textContent= loadingText
+  } else {
+    button.textContent = buttonText
   }
 }
 
@@ -189,4 +187,4 @@ initProfile()
 });
 
 
-export {placesList, formAddCard,validatonModalConfig, profileName, profileDescription, inputNameProfile,inputJobProfile,inputLinkCard,inputNameCard,popupNewCard,popupEditProfile, inputLinkAvatar, popupEditAvatar,  openPopupImage, profile, clearInputValuesIfExist, setButtonText};
+export {placesList, formAddCard,validatonModalConfig, profileName, profileDescription, inputNameProfile,inputJobProfile,inputLinkCard,inputNameCard,popupNewCard,popupEditProfile, inputLinkAvatar, popupEditAvatar,  openPopupImage, clearInputValuesIfExist, renderLoading};

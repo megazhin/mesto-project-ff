@@ -1,11 +1,10 @@
 import { handleDeleteCard, like, unlike, cardLikeButton} from "./api";
-import { profile } from "..";
 
-function createWidget(element,  openPopupImage) {
+function createWidget(element,  openPopupImage, profile) {
   
     const newCardTemplate = getClonableCard();
    
-    fillCard(newCardTemplate, element);
+    fillCard(newCardTemplate, element, profile);
    
     const deleteButton = newCardTemplate.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', deleteCard);
@@ -39,7 +38,7 @@ function createWidget(element,  openPopupImage) {
     })
   }
 
-  function fillCard(newCardTemplate, element) {
+  function fillCard(newCardTemplate, element, profile) {
     newCardTemplate.querySelector('.card__image').src = element.link;
     newCardTemplate.querySelector('.card__title').textContent = element.name;
     newCardTemplate.querySelector('.card__image').alt = element.alt;
